@@ -12,7 +12,7 @@ var express=require("express"),
 //mongoosse /model cofiguration
     var blogSchema=new mongoose.Schema({
         title:String, 
-        image:{type:String,default:"abc.jpg"},
+        image:String,
         body:String,
         created:{type:Date,default:Date.now}
     });
@@ -37,6 +37,26 @@ var express=require("express"),
             if(err)console.log(err)
             else res.render("index",{data:blog})
         })
+    })
+//form page
+    app.get("/blogs/new",(req,res)=>{
+        res.render("new");
+    });
+    //form page execute or creating
+    app.post("/blogs",(req,res)=>{
+        Blog.create(req.body.blog,(err,blog)=>{
+            if(err)res.render("new");
+            else res.redirect("/blogs");
+        })
+    })
+//show route
+    app.get("/blogs/:id",(req,res)=>{
+        var id=req.params.id;
+        Blog.findById(id,(err,body)=>{
+            if(err) res.redirect("/blogs");
+            else res.render("show",{data:body});
+        })
+        // res.render("show")
     })
 
     app.listen('3000',function(err,run){

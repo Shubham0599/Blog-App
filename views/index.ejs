@@ -1,12 +1,13 @@
 <%- include('partials/header.ejs');-%>
-<div class="main ui container">
+<div class="mainy ui container">
     <% data.forEach(function(x){%>
         <div>
             <h2><%= x.title%></h2>
             <img src="<%= x.image%>">
-            <p><%=x.body%></p>
+            <p><%=x.body.slice(0,5)%></p>
+            <a href="blogs/<%=x._id%>">more info</a>
             <%=(x.created)%>
         </div>
         <%})%>
-        <%-include('partials/footer.ejs');-%>
 </div>
+<%-include('partials/footer.ejs');-%>
