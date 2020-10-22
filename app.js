@@ -1,4 +1,5 @@
 var express=require("express"),
+    methodOverride=require("method-override"),
     mongoose=require("mongoose"),
     bodyParser=require("body-parser");
     
@@ -6,6 +7,8 @@ var express=require("express"),
 
     //app config
     mongoose.connect("mongodb://localhost:27017/blog_app",{useNewUrlParser:true,useUnifiedTopology:true});
+    
+    app.use(methodOverride("_method"))
     app.use(express.static("public"));
     app.set("view engine","ejs");
     app.use(bodyParser.urlencoded({extended:true}));
@@ -57,6 +60,22 @@ var express=require("express"),
             else res.render("show",{data:body});
         })
         // res.render("show")
+    })
+
+    //edit route
+    app.get("/blogs/:id/edit",function(req,res){
+        Blog.findById(req.params.id,(err,value)=>{
+            if(err) res.redirect("/blogs") ;
+            else  res.render("edit",{data:value});
+        })
+       
+    })
+    //update route
+    app.put("/blogs/:id",function(req,res){
+        Blog.findByIdAndUpdate(req.params.id,req.body.blog,(err,data)=>{
+            if(err) res.redirect("/blogs")
+            else res.redirect(`/blogs/${req.params.id}`)
+        })
     })
 
     app.listen('3000',function(err,run){
