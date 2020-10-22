@@ -1,17 +1,21 @@
+//sanitizer should be used after body-parser
 var express=require("express"),
     methodOverride=require("method-override"),
     mongoose=require("mongoose"),
     bodyParser=require("body-parser");
     
+    const expressSanitizer=require("express-sanitizer");
+    
     var app=express();
 
     //app config
-    mongoose.connect("mongodb://localhost:27017/blog_app",{useNewUrlParser:true,useUnifiedTopology:true});
+    mongoose.connect("mongodb://localhost:27017/blog_app",{useNewUrlParser:true,useUnifiedTopology:true, useFindAndModify: false});
     
     app.use(methodOverride("_method"))
     app.use(express.static("public"));
     app.set("view engine","ejs");
     app.use(bodyParser.urlencoded({extended:true}));
+    app.use (expressSanitizer());
 //mongoosse /model cofiguration
     var blogSchema=new mongoose.Schema({
         title:String, 
@@ -47,6 +51,8 @@ var express=require("express"),
     });
     //form page execute or creating
     app.post("/blogs",(req,res)=>{
+        req.body.blog.body=req.sanitize(req.body.blog.body);
+      
         Blog.create(req.body.blog,(err,blog)=>{
             if(err)res.render("new");
             else res.redirect("/blogs");
@@ -72,9 +78,18 @@ var express=require("express"),
     })
     //update route
     app.put("/blogs/:id",function(req,res){
+        req.body.blog.body=req.sanitize(req.body.blog.body);
+
         Blog.findByIdAndUpdate(req.params.id,req.body.blog,(err,data)=>{
-            if(err) res.redirect("/blogs")
-            else res.redirect(`/blogs/${req.params.id}`)
+            if(err) res.redirect(`/blogs/${req.params.id}`)
+            else res.redirect("/blogs")
+        })
+    })
+//delete 
+    app.delete("/blogs/:id",(req,res)=>{
+        Blog.findByIdAndRemove(req.params.id,(err)=>{
+            if(err) res.redirect(`/blogs/${req.params.id}`)
+            else res.redirect("/blogs")
         })
     })
 

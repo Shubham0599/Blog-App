@@ -1,5 +1,6 @@
 <%- include('partials/header.ejs');-%>
-<div class=" mainy ui main text container segment">
+<div class="mainy">
+<div class="ui main text container segment">
     <div class="ui huge header"><strong>Edit</strong><%=data.title%></div>
 <form class="ui form" method="POST" action="/blogs/<%=data._id%>?_method=PUT">
     <div class="field">
@@ -18,5 +19,6 @@
     </div>
     <div class="field "><input class="ui button samall inverted brown" type="submit"></div>
 </form>
+</div>
 </div>
 <%- include('partials/footer.ejs');-%>

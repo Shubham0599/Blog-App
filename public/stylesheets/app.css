@@ -2,6 +2,8 @@ i.icon{
     font-size: 2em;
 }
 .mainy{
-    position: relative;
-    top:8rem;
+   margin-top: 5rem;
+}
+#delete{
+    display:inline;
 }
