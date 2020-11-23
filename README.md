@@ -13,6 +13,7 @@ Representational state transfer(REST) is web standards based architecture and us
 **RESTful Blog App** is a web application developed on RESTful Routing using Node.JS, Express.JS, Embedded JavaScript (EJS) and more.:innocent::metal:
 
 ## RESTful Routes with Features:stars::stars:
+<img src="files/intro photo.png">
 
 :beginner:*Features of app is listed in purpose*:beginner:
 
